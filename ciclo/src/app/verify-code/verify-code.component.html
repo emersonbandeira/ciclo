@@ -1,0 +1,11 @@
+<form (ngSubmit)="submitCode()" [formGroup]="codeForm">
+    <label for="email">E-mail:</label>
+    <input id="email" formControlName="email" type="email" required />
+  
+    <label for="code">Código:</label>
+    <input id="code" formControlName="code" type="text" required />
+  
+    <button type="submit">Validar Código</button>
+  </form>
+  <div *ngIf="message">{{ message }}</div>
+  
