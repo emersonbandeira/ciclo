@@ -1,0 +1,27 @@
+# Node modules
+node_modules/
+
+# Diretório de build
+dist/
+tmp/
+out-tsc/
+
+# Cache e coverage
+.cache/
+coverage/
+
+# IDEs e arquivos de sistema
+.DS_Store
+Thumbs.db
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+.vscode/
+.idea/
+
+# Arquivos de ambiente
+.env
+.env.*
+src/environments/environment.prod.ts # Se contiver dados sensíveis
+
