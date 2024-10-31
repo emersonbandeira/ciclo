@@ -8,9 +8,6 @@ import { LoginFormComponent } from './login-form/login-form.component';
 import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
-  declarations: [
-    LoginFormComponent
-  ],
   imports: [
     BrowserModule,
     ReactiveFormsModule,
@@ -18,6 +15,6 @@ import { AppRoutingModule } from './app-routing.module';
     AppRoutingModule  // Adicione o módulo de roteamento aqui
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: []
 })
 export class AppModule {}

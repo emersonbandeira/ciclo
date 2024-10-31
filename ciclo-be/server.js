@@ -77,9 +77,11 @@ app.post('/api/verify-code', (req, res) => {
 
     if (results.length > 0) {
       // Código encontrado e válido
+      console.log("Código válido!");
       res.json({ message: 'Código válido!' });
     } else {
       // Código não encontrado ou inválido
+      console.log("Código INválido!");
       res.status(400).json({ message: 'Código inválido ou expirado' });
     }
   });

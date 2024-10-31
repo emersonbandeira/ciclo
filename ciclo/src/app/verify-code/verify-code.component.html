@@ -1,11 +1,13 @@
-<form (ngSubmit)="submitCode()" [formGroup]="codeForm">
+<div class="form-container">
+  <form (ngSubmit)="submitCode()" [formGroup]="codeForm">
+    <h2>Verificação de Código</h2>
     <label for="email">E-mail:</label>
-    <input id="email" formControlName="email" type="email" required />
-  
+    <input id="email" formControlName="email" type="email" required placeholder="Digite seu e-mail" />
+
     <label for="code">Código:</label>
-    <input id="code" formControlName="code" type="text" required />
-  
+    <input id="code" formControlName="code" type="text" required placeholder="Digite o código" />
+
     <button type="submit">Validar Código</button>
+    <div *ngIf="message" class="message">{{ message }}</div>
   </form>
-  <div *ngIf="message">{{ message }}</div>
-  
+</div>

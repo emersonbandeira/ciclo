@@ -1,7 +1,10 @@
-<form (ngSubmit)="submitEmail()" [formGroup]="emailForm">
+<div class="form-container">
+  <form (ngSubmit)="submitEmail()" [formGroup]="emailForm">
+    <h2>Entrar</h2>
     <label for="email">E-mail:</label>
-    <input id="email" formControlName="email" type="email" required />
+    <input id="email" formControlName="email" type="email" required placeholder="Digite seu e-mail" />
+
     <button type="submit">Enviar Código</button>
+    <div *ngIf="message" class="message">{{ message }}</div>
   </form>
-  <div *ngIf="message">{{ message }}</div>
-  
+</div>

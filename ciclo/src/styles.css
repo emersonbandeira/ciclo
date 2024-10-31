@@ -1,4 +1,75 @@
 /* You can add global styles to this file, and also import other style files */
-.LoginForm{
-    align-self: center;
-}
+/* Estilo Global em styles.css */
+
+body {
+    background-color: #001f3f; /* Azul-marinho */
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  form {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    color: #001f3f;
+  }
+  
+  h2 {
+    margin-bottom: 1.5rem;
+    color: #001f3f;
+  }
+  
+  label {
+    display: block;
+    margin-top: 1rem;
+    color: #001f3f;
+    text-align: left;
+    font-weight: bold;
+  }
+  
+  input {
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1rem;
+  }
+  
+  button {
+    margin-top: 1.5rem;
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  .message {
+    margin-top: 1rem;
+    color: #d9534f;
+    font-weight: bold;
+  }
+  
