@@ -10,7 +10,7 @@
     transform: translateX(-100%); /* Esconde o menu fora da tela */
     transition: transform 0.3s ease;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
-    padding: 1rem;
+    padding: 6rem 1rem 1rem;
     z-index: 999;
   }
   

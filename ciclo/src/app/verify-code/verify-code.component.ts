@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common'; 
 import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-verify-code',
@@ -17,7 +18,8 @@ export class VerifyCodeComponent {
 
   constructor(private fb: FormBuilder, 
               private http: HttpClient, 
-              private router: Router) {
+              private router: Router,
+              private authService: AuthService) {
     this.codeForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       code: ['', [Validators.required, Validators.pattern(/^[0-9]{6}$/)]], // Código de 6 dígitos
@@ -28,16 +30,17 @@ export class VerifyCodeComponent {
     if (this.codeForm.valid) {
       const { email, code } = this.codeForm.value;
       console.log("code: " + code );
-      this.http
-        .post<{ message: string }>('/api/verify-code', { email, code })
-        .subscribe(
-          (response) => (this.router.navigate(['/main'])),
-          (error) => {
-            this.router.navigate(['/'], {
-              queryParams: { error: 'Código inválido ou expirado.' },
-            });
-          }
-        );
+      this.authService.verifyCodeAuth(email, code);
+      //this.http
+      //  .post<{ message: string }>('/api/verify-code', { email, code })
+      //  .subscribe(
+      //    (response) => (this.router.navigate(['/main'])),
+      //    (error) => {
+      //      this.router.navigate(['/'], {
+      //        queryParams: { error: 'Código inválido ou expirado.' },
+      //      });
+      //    }
+      //  );
     }
   }
 }

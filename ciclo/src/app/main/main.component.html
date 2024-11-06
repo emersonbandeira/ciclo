@@ -1,7 +1,10 @@
 <div class="main-container" [class.menu-open]="isMenuOpen">
     <!-- Botão para abrir/fechar o menu -->
     <button class="menu-toggle-btn" (click)="toggleMenu()">☰</button>
-  
+    <span class="user-email">{{ userEmail }}</span>
+    <!-- Botão de logout no canto superior direito -->
+    <button class="logout-btn" (click)="logout()">Logout</button>
+    
     <!-- Menu lateral recolhível -->
     <app-side-menu [isOpen]="isMenuOpen"></app-side-menu>
   

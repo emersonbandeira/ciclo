@@ -7,15 +7,16 @@
   /* Botão de abrir/fechar o menu no canto superior esquerdo */
   .menu-toggle-btn {
     position: fixed;
-    top: 0.5rem;
+    top: 1rem;
     left: 0.5rem;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     font-size: 1.5rem;
     background-color: #007bff;
     color: white;
     border: none;
     border-radius: 4px;
+    padding: 0rem 1rem 1rem 0.5rem;
     cursor: pointer;
     z-index: 1000;
   }
@@ -31,4 +32,36 @@
   .main-container.menu-open .content {
     margin-left: 250px; /* Ajusta o conteúdo para o lado direito do menu */
   }
-  
+
+  /* Botão de logout no canto superior direito */
+.logout-btn {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  width: 40px;
+  height: 40px;
+  background-color: #ff4b4b;
+  color: white;
+  border: none;
+  padding: 0.5rem 4rem 1rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  z-index: 1000;
+  transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: #d43f3f;
+}
+
+/* Estilo do e-mail do usuário */
+.user-email {
+  position: fixed;
+  margin-right: 1rem;
+  top: 0.5rem;
+  right: 0.5rem;
+  font-size: 1rem;
+  color: #6384c2;
+}
