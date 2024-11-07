@@ -2,7 +2,10 @@
     <!-- <button class="close-btn" (click)="isOpen = false">×</button> -->
     <h3>Menu</h3>
     <ul>
-      <li><a href="/login">Item 1</a></li>
+      <li *ngIf="!(isRegistrationComplete$ | async)">  
+        <a href="/register">Completar cadastro&nbsp;<fa-icon [icon]="faExclamationTriangle" class="alert-icon"></fa-icon>
+        </a>
+      </li>
       <li><a href="#">Item 2</a></li>
       <li><a href="#">Item 3</a></li>
       <li><a href="#">Item 4</a></li>

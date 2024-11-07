@@ -1,0 +1,24 @@
+<div class="form-container">
+
+<form [formGroup]="registerForm" (ngSubmit)="registerUser()">
+    <label for="email">E-mail</label>
+    <input id="email" formControlName="email" type="email" readonly  />
+  
+    <label for="nome">Nome</label>
+    <input id="nome" formControlName="nome" type="text" required />
+  
+    <label for="cpf">CPF</label>
+    <input id="cpf" formControlName="cpf" type="text" required [mask]="'000.000.000-00'" (keypress)="allowOnlyNumbers($event)"/>
+    <div *ngIf="registerForm.get('cpf')?.hasError('cpfInvalido') && registerForm.get('cpf')?.touched">
+        <small style="color: red;">CPF inválido.</small>
+    </div>
+  
+    <label for="data_nascimento">Data de Nascimento</label>
+    <input id="data_nascimento" formControlName="data_nascimento" type="date" required />
+  
+    <label for="senha">Senha</label>
+    <input id="senha" formControlName="senha" type="password" required />
+  
+    <button type="submit" [disabled]="registerForm.invalid">Cadastrar</button>
+  </form>
+</div>

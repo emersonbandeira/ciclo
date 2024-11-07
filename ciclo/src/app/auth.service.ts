@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
+import { Observable, BehaviorSubject  } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 interface MyTokenPayload extends JwtPayload {
   email: string;
@@ -14,6 +16,8 @@ interface MyTokenPayload extends JwtPayload {
 })
 export class AuthService {
   private apiUrl = 'http://localhost:3000/api';
+  private registrationCompleteSubject = new BehaviorSubject<boolean>(false);
+  isRegistrationComplete$ = this.registrationCompleteSubject.asObservable(); 
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -27,8 +31,23 @@ export class AuthService {
         console.error('Erro de autenticação:', error);
       }
     );
-
   
+  }
+
+  checkRegistrationStatus(email: string): Observable<{ cadastroCompleto: boolean }> {
+    console.log("checkRegistrationStatus");
+    return this.http.get<{ cadastroCompleto: boolean }>(`${this.apiUrl}/check-registration`, { params: { email } })
+      .pipe(
+        tap(response => this.registrationCompleteSubject.next(response.cadastroCompleto)) // Atualiza o BehaviorSubject
+      );
+  }
+
+  setRegistrationCompleteStatus(status: boolean): void {
+    this.registrationCompleteSubject.next(status);
+  }
+
+  isRegistrationComplete(email: string): Observable<{ cadastroCompleto: boolean }> {
+    return this.http.get<{ cadastroCompleto: boolean }>(`${this.apiUrl}/check-registration`, { params: { email } });
   }
 
   verifyCodeAuth(email: string, code: string){

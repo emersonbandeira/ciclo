@@ -5,13 +5,14 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
 const mysql = require('mysql2');
+const rateLimit = require('express-rate-limit');
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
 const users = []; // Exemplo de armazenamento de usuários (use um banco de dados em produção)
-const JWT_SECRET = 'sua_chave_secreta'; // Use uma chave secreta segura
+const JWT_SECRET = 'xyz_abc'; // Use uma chave secreta segura
 
 // Configuração da conexão MySQL
 const db = mysql.createConnection({
@@ -36,18 +37,31 @@ const transporter = nodemailer.createTransport({
 
 
 // Rota de login para autenticar o usuário e gerar um token JWT
-app.post('/api/login', async (req, res) => {
+app.post('/api/login', (req, res) => {
   const { email, password } = req.body;
-  const user = users.find((u) => u.email === email);
-  if (user && (await bcrypt.compare(password, user.password))) {
-    // Gera o token JWT
-    const token = jwt.sign({ email }, JWT_SECRET, { expiresIn: '1h' });
-    res.json({ token });
-  } else {
-    res.status(401).json({ message: 'Credenciais inválidas' });
-  }
-});
 
+  const query = 'SELECT * FROM users WHERE email = ?';
+  db.query(query, [email], async (err, results) => {
+    if (err) {
+      console.error('Erro ao consultar o banco de dados:', err);
+      return res.status(500).json({ message: 'Erro interno' });
+    }
+
+    if (results.length === 0) {
+      return res.status(400).json({ message: 'E-mail ou senha incorretos.' });
+    }
+
+    const user = results[0];
+    const passwordMatch = await bcrypt.compare(password, user.senha);
+
+    if (!passwordMatch) {
+      return res.status(400).json({ message: 'E-mail ou senha incorretos.' });
+    }
+
+    const token = jwt.sign({ email: user.email }, JWT_SECRET, { expiresIn: '1h' });
+    res.json({ token });
+  });
+});
 
 app.post('/api/verifyCodeAuth', async (req, res) => {
   const { email, code } = req.body;
@@ -87,6 +101,11 @@ function authenticateToken(req, res, next) {
   });
 }
 
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutos
+  max: 100 // 100 requisições por IP
+});
+
 // Rota protegida para exemplo
 app.get('/api/protected', authenticateToken, (req, res) => {
   res.json({ message: 'Acesso autorizado!' });
@@ -106,24 +125,11 @@ app.post('/api/send-code', (req, res) => {
       return;
     }
 
-    const emailBody = `
-    <div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px; padding: 20px;">
-      <h2 style="text-align: center; color: #4CAF50;">Verificação de Conta</h2>
-      <p>Olá,</p>
-      <p>Para completar seu login, por favor, use o código de verificação abaixo:</p>
-      <div style="text-align: center; margin: 20px 0;">
-        <span style="font-size: 24px; font-weight: bold; color: #4CAF50; padding: 10px 20px; border: 1px dashed #4CAF50; border-radius: 8px;">${code}</span>
-      </div>
-      <p>Este código expira em 10 minutos.</p>
-      <p style="margin-top: 20px;">Se você não solicitou este código, por favor, ignore este e-mail.</p>
-      <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;">
-      <p style="font-size: 12px; color: #777;">Atenciosamente, <br>Equipe do Suporte</p>
-    </div>
-  `;
+    const emailBody = `<font size="20">${code}</font>`;
 
     // Configuração do e-mail com o código
     const mailOptions = {
-      from: 'seu-email@gmail.com',
+      from: 'devmmbr@gmail.com',
       to: email,
       subject: 'Seu Código de Autenticação',
       text: emailBody,
@@ -141,6 +147,9 @@ app.post('/api/send-code', (req, res) => {
     });
   });
 });
+
+//app.use('/api/check-registration', authenticateToken, apiLimiter);
+app.use('/api/verify-code', authenticateToken, apiLimiter);
 
 // Rota para validar o código
 app.post('/api/verify-code', (req, res) => {
@@ -168,6 +177,41 @@ app.post('/api/verify-code', (req, res) => {
   });
 });
 
+// Rota de registro de usuário
+app.post('/api/register', async (req, res) => {
+  const { email, nome, cpf, data_nascimento, senha } = req.body;
+  const hashedPassword = await bcrypt.hash(senha, 10);
+
+  const query = 'INSERT INTO users (email, nome, cpf, data_nascimento, senha) VALUES (?, ?, ?, ?, ?)';
+  db.query(query, [email, nome, cpf, data_nascimento, hashedPassword], (err, result) => {
+    if (err) {
+      console.error('Erro ao inserir usuário:', err);
+      return res.status(500).json({ message: 'Erro interno' });
+    }
+    res.status(201).json({ message: 'Usuário cadastrado com sucesso!' });
+  });
+});
+
+app.get('/api/check-registration', (req, res) => {
+  const { email } = req.query;
+
+  const query = 'SELECT cadastro_completo FROM users WHERE email = ?';
+  db.query(query, [email], (err, results) => {
+    if (err) {
+      console.error('Erro ao consultar o banco de dados:', err);
+      return res.status(500).json({ message: 'Erro interno' });
+    }
+
+    if (results.length === 0) {
+      console.log("Usuario nao encontrado: [" + email + "]");
+      return res.status(404).json({ message: 'Usuário não encontrado.' });
+    }
+
+    const cadastroCompleto = results[0].cadastro_completo;
+    console.log("CadastroCompleto:"+cadastroCompleto);
+    res.json({ cadastroCompleto });
+  });
+});
 
 // Iniciar o servidor
 const PORT = process.env.PORT || 3000;

@@ -1,10 +1,24 @@
 <div class="form-container">
-  <form (ngSubmit)="submitEmail()" [formGroup]="emailForm">
+  <form (ngSubmit)="isCodeLogin ? submitEmail() : loginWithPassword()" [formGroup]="loginForm">
     <h2>Entrar</h2>
+
     <label for="email">E-mail:</label>
     <input id="email" formControlName="email" type="email" required placeholder="Digite seu e-mail" />
 
-    <button type="submit">Enviar Código</button>
+    <div *ngIf="isCodeLogin">
+      <button type="submit">Enviar Código</button>
+    </div>
+
+    <div *ngIf="!isCodeLogin">
+      <label for="password">Senha:</label>
+      <input id="password" formControlName="password" type="password" required placeholder="Digite sua senha" />
+      <button type="submit">Entrar com Senha</button>
+    </div>
+
+    <button type="button" (click)="toggleLoginMode()">
+      {{ isCodeLogin ? 'Usar E-mail e Senha' : 'Usar Código de Verificação' }}
+    </button>
+
     <div *ngIf="message" class="message">{{ message }}</div>
   </form>
 </div>
