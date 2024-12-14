@@ -4,10 +4,15 @@ import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import  Swal  from 'sweetalert2';
 
+
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [SideMenuComponent],
+  template: `
+    <h1>Página Principal</h1>
+    <app-google-map></app-google-map> <!-- Uso do MapComponent -->
+  `,
+  imports: [SideMenuComponent ],
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css'],
 })
@@ -24,6 +29,7 @@ export class MainComponent implements OnInit {
       this.router.navigate(['/login']);
     }
     this.userEmail = this.authService.getUserEmail();
+
   }
 
   toggleMenu() {

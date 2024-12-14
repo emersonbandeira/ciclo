@@ -9,6 +9,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
+
+
 bootstrapApplication(AppComponent, {
   providers: [
     importProvidersFrom(BrowserModule, ReactiveFormsModule, HttpClientModule, AppRoutingModule, NgxMaskDirective, FontAwesomeModule),

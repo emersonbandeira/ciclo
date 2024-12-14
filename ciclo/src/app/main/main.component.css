@@ -2,6 +2,10 @@
 .main-container {
     display: flex;
     transition: margin-left 0.3s ease;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
   }
   
   /* Botão de abrir/fechar o menu no canto superior esquerdo */
@@ -27,7 +31,7 @@
     padding: 2rem 5rem;
     transition: margin-left 0.3s ease;
   }
-  
+
   /* Classe aplicada quando o menu está aberto */
   .main-container.menu-open .content {
     margin-left: 250px; /* Ajusta o conteúdo para o lado direito do menu */
@@ -64,4 +68,20 @@
   right: 0.5rem;
   font-size: 1rem;
   color: #6384c2;
+}
+
+.main-layout {
+  display: flexbox; /* Define um layout flexbox */
+  flex-direction: row; /* Organiza os itens em linha */
+  height: 100vh; /* Ocupa a altura total da janela */
+  width: 100%; /* Ocupa toda a largura */
+}
+
+.map-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e0e0e0;
+  padding: 10px;
 }
